@@ -12,6 +12,7 @@ namespace SolviaWebsiteToPdf
         }
         public async Task<List<string>> ParseSitemapAsync(string sitemapUrl)
         {
+            await Console.Out.WriteLineAsync("Will try to parse sitemap");
             var urls = new List<string>();
             var web = new HtmlWeb();
             var doc = await web.LoadFromWebAsync(sitemapUrl);
@@ -20,12 +21,14 @@ namespace SolviaWebsiteToPdf
             {
                 urls.Add(node.InnerText);
             }
+            await Console.Out.WriteLineAsync($"According to the sitemap, there are {urls.Count} pages to process!");
 
             return urls;
         }
 
         public async Task<List<string>> ParseSitemapAsync(string sitemapUrl, string username, string password)
         {
+            await Console.Out.WriteLineAsync("Will try to parse sitemap");
             var urls = new List<string>();
 
             using (var client = new HttpClient())
@@ -48,9 +51,11 @@ namespace SolviaWebsiteToPdf
                 }
                 else
                 {
+                    await Console.Out.WriteLineAsync($"Failed to download sitemap: {response.StatusCode}");
                     throw new Exception($"Failed to download sitemap: {response.StatusCode}");
                 }
             }
+            await Console.Out.WriteLineAsync($"According to the sitemap, there are {urls.Count} pages to process!");
 
             return urls;
         }

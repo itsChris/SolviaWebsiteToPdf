@@ -31,33 +31,17 @@ namespace SolviaWebsiteToPdf
 
             foreach (var url in urls)
             {
+                Console.WriteLine($"Processing {url}");
                 var page = await browser.NewPageAsync();
                 await page.GoToAsync(url);
                 var sanitizedUrl = SanitizeUrl(url);
                 var fileName = Path.Combine(_outputFolder, $"{sanitizedUrl}.pdf");
+                Console.WriteLine($"saving to {fileName}");
                 await page.PdfAsync(fileName);
             }
 
             await browser.CloseAsync();
         }
-
-        public async Task GeneratePdfAsyncEx(List<string> urls)
-        {
-            await new BrowserFetcher().DownloadAsync();
-            var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
-
-            foreach (var url in urls)
-            {
-                var page = await browser.NewPageAsync();
-                await page.GoToAsync(url, new NavigationOptions { WaitUntil = new[] { WaitUntilNavigation.Networkidle0 }, Timeout = 60000 });
-                // Additional waits or JavaScript execution here if necessary
-                var sanitizedUrl = SanitizeUrl(url);
-                var fileName = Path.Combine(_outputFolder, $"{sanitizedUrl}.pdf");
-                await page.PdfAsync(fileName, new PdfOptions { Format = PaperFormat.A4, PrintBackground = true });
-            }
-            await browser.CloseAsync();
-        }
-
         public async Task GeneratePdfAsyncEx(List<string> urls, string username, string password)
         {
             await new BrowserFetcher().DownloadAsync();
