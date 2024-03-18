@@ -37,7 +37,7 @@ dotnet build
 Run the program from the command line, specifying the required parameters:
 
 ```bash
-dotnet run -- -SiteMapUrl <SitemapURL> -OutputFolder <PathToOutputFolder> [-username <Username> -password <Password>]
+SolviaWebsiteToPdf.exe -SiteMapUrl <SitemapURL> -OutputFolder <PathToOutputFolder> [-username <Username> -password <Password>]
 ```
 
 - `-SiteMapUrl`: The URL or path to the sitemap.xml file.
@@ -48,7 +48,7 @@ dotnet run -- -SiteMapUrl <SitemapURL> -OutputFolder <PathToOutputFolder> [-user
 ### Example
 
 ```bash
-dotnet run -- -SiteMapUrl https://example.com/sitemap.xml -OutputFolder C:\PDFs
+SolviaWebsiteToPdf.exe -SiteMapUrl https://www.solvia.ch/page-sitemap.xml -OutputFolder C:\PDFs
 ```
 
 ## Customization
