@@ -5,6 +5,14 @@ namespace SolviaWebsiteToPdf
 {
     public class WebsiteToPdfConverter
     {
+        private readonly string _outputFolder;
+
+        public WebsiteToPdfConverter(string outputFolder)
+        {
+            _outputFolder = outputFolder;
+            // Ensure the output directory exists
+            Directory.CreateDirectory(_outputFolder);
+        }
         private string SanitizeUrl(string url)
         {
             // List of characters that are not allowed in file names in Windows.
@@ -26,7 +34,7 @@ namespace SolviaWebsiteToPdf
                 var page = await browser.NewPageAsync();
                 await page.GoToAsync(url);
                 var sanitizedUrl = SanitizeUrl(url);
-                var fileName = $"{sanitizedUrl}.pdf";
+                var fileName = Path.Combine(_outputFolder, $"{sanitizedUrl}.pdf");
                 await page.PdfAsync(fileName);
             }
 
@@ -44,10 +52,9 @@ namespace SolviaWebsiteToPdf
                 await page.GoToAsync(url, new NavigationOptions { WaitUntil = new[] { WaitUntilNavigation.Networkidle0 }, Timeout = 60000 });
                 // Additional waits or JavaScript execution here if necessary
                 var sanitizedUrl = SanitizeUrl(url);
-                var fileName = $"{sanitizedUrl}.pdf";
+                var fileName = Path.Combine(_outputFolder, $"{sanitizedUrl}.pdf");
                 await page.PdfAsync(fileName, new PdfOptions { Format = PaperFormat.A4, PrintBackground = true });
             }
-
             await browser.CloseAsync();
         }
 
@@ -81,7 +88,7 @@ namespace SolviaWebsiteToPdf
                 await page.WaitForTimeoutAsync(5000);
 
                 var sanitizedUrl = SanitizeUrl(url);
-                var fileName = $"{sanitizedUrl}.pdf";
+                var fileName = Path.Combine(_outputFolder, $"{sanitizedUrl}.pdf");
                 Console.WriteLine($"saving to {fileName}");
                 await page.PdfAsync(fileName, new PdfOptions { Format = PaperFormat.A4, Landscape=true, PrintBackground = true });
             }
@@ -93,6 +100,5 @@ namespace SolviaWebsiteToPdf
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes($"{username}:{password}");
             return Convert.ToBase64String(plainTextBytes);
         }
-
     }
 }

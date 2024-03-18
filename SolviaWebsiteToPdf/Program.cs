@@ -13,22 +13,23 @@ namespace SolviaWebsiteToPdf
             string username = null;
             string password = null;
 
-            // Parse command-line arguments
+            // Parse command-line arguments in a case-insensitive manner
             for (int i = 0; i < args.Length; i++)
             {
-                if (args[i] == "-SiteMapUrl" && i + 1 < args.Length)
+                string arg = args[i].ToLower(); // Convert argument key to lowercase
+                if (arg == "-sitemapurl" && i + 1 < args.Length)
                 {
                     sitemapUrl = args[++i];
                 }
-                else if (args[i] == "-OutputFolder" && i + 1 < args.Length)
+                else if (arg == "-outputfolder" && i + 1 < args.Length)
                 {
                     outputFolder = args[++i];
                 }
-                else if (args[i] == "-username" && i + 1 < args.Length)
+                else if (arg == "-username" && i + 1 < args.Length)
                 {
                     username = args[++i];
                 }
-                else if (args[i] == "-password" && i + 1 < args.Length)
+                else if (arg == "-password" && i + 1 < args.Length)
                 {
                     password = args[++i];
                 }
@@ -38,7 +39,7 @@ namespace SolviaWebsiteToPdf
             if (sitemapUrl == null || outputFolder == null)
             {
                 Console.WriteLine("Usage:");
-                Console.WriteLine("  -SiteMapUrl <url> -OutputFolder <path> [-username <username> -password <password>]");
+                Console.WriteLine("-SiteMapUrl <url> -OutputFolder <path> [-username <username> -password <password>]");
                 Console.WriteLine("\n-SiteMapUrl and -OutputFolder are mandatory.");
                 Console.WriteLine("-username and -password are optional for sites requiring authentication.");
                 return;
